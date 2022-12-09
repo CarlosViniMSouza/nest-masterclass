@@ -1,23 +1,20 @@
-import { Body, Controller, Get } from '@nestjs/common';
-import { PrismaService } from './database/prisma.service';
-import { randomUUID } from 'crypto';
+import { Get, Post, Body, Controller } from '@nestjs/common';
+import { CreateEmployeeBody } from './dtos/createEmployeeBody';
+import { EmployeeRepository } from './repositories/employeeRepository';
 
-@Controller()
+@Controller('app')
 export class AppController {
-  constructor(private prisma: PrismaService) { }
+  constructor(private employeeRepository: EmployeeRepository) { }
 
   @Get()
-  async getServer(@Body() body: any) {
+  getHello() {
+    return 'Hello World!';
+  }
+
+  @Post('employee')
+  async getEmployee(@Body() body: CreateEmployeeBody) {
     const { name, occupation } = body;
 
-    const newMember = await this.prisma.employee.create({
-      data: {
-        id: randomUUID(),
-        name,
-        occupation
-      }
-    });
-
-    return { member: newMember };
+    await this.employeeRepository.create(name, occupation);
   }
 }

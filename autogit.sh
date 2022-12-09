@@ -1,4 +1,4 @@
 git add -A
-git commit -m "Stop Moment: 55:00"
+git commit -m "application done"
 git push -u origin main
 git status
